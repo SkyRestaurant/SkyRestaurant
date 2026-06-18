@@ -1,0 +1,63 @@
+---
+// src/layouts/BaseLayout.astro
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: 'mk' | 'en';
+}
+
+// Izvlačimo props koje prosleđujemo iz svake stranice (index.astro, menu.astro itd.)
+// Postavljamo default vrednosti ako se ne proslede
+const { 
+  title, 
+  description = "Sky Restaurant & Pool Bar - Вкус, забава и летна магија.", 
+  lang = "mk" 
+} = Astro.props;
+
+// Definišemo osnovni URL za Open Graph (prilagodi domenu)
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://skyrestaurant.mk');
+---
+
+<!DOCTYPE html>
+<html lang={lang} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- Open Graph / Facebook (Za deljenje linka na mrežama) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <!-- Stavi neku lepu sliku restorana u public/img/ za ovaj share preview -->
+    <meta property="og:image" content={new URL('/img/sky-og-image.jpg', Astro.url)} />
+
+    <!-- Google Fonts (Ako koristiš specifične fontove sa starog sajta, dodajemo ih ovde) -->
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+  </head>
+
+  <!-- Tailwind klase na body-ju za globalni stil. 
+       Prilagodi boju pozadine i teksta (npr. bg-[#f8f5f0] iz starog dizajna) -->
+  <body class="bg-[#f8f6f0] text-[#333333] antialiased font-sans min-h-screen flex flex-col">
+    
+    <!-- Ovde ćemo ubaciti <Navbar lang={lang} /> komponentu -->
+
+    <!-- <slot /> je mesto gde se ubacuje sadržaj svake pojedinačne stranice -->
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <!-- Ovde ćemo ubaciti <Footer lang={lang} /> komponentu -->
+
+  </body>
+</html>
