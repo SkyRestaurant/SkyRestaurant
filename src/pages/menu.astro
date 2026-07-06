@@ -1,0 +1,253 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import { menuData } from '../data/menu.js';
+
+// Sigurno definisanje tipa za TypeScript
+const lang = 'mk' as 'mk' | 'en'; 
+const currency = lang === 'en' ? 'den.' : 'ден.';
+
+const mainCategories = Object.entries(menuData);
+---
+
+<BaseLayout title={lang === 'en' ? "Menu | Sky Restaurant" : "Мени | Скај Ресторан"} lang={lang}>
+  
+  <!-- Premium tamna pozadina sa suptilnim noise/paper efektom (bez sijalica) -->
+  <main class="relative min-h-screen bg-zinc-950 pt-24 pb-16 text-stone-300 font-sans overflow-hidden">
+    <!-- Noise tekstura -->
+    <div class="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-screen" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+
+    <div class="max-w-6xl mx-auto px-4 relative z-10">
+      
+      <!-- Header -->
+      <div class="flex flex-col items-center text-center mb-16">
+        <span class="font-display text-xl md:text-2xl text-stone-400 mb-4 lowercase tracking-[0.3em]">
+          {lang === 'en' ? 'menu' : 'мени'}
+        </span>
+        <div class="flex items-center justify-center gap-6 w-full">
+          <div class="h-[1px] bg-zinc-800 flex-1 max-w-[100px]"></div>
+          <h1 class="font-serif text-3xl md:text-5xl uppercase tracking-[0.2em] text-stone-200 px-2">
+            {lang === 'en' ? 'Selection' : 'Селекција'}
+          </h1>
+          <div class="h-[1px] bg-zinc-800 flex-1 max-w-[100px]"></div>
+        </div>
+      </div>
+
+      <!-- Main Tabs (Slike umesto SVG, čist mat dizajn) -->
+      <div class="flex justify-center gap-16 md:gap-32 mb-16 relative z-10">
+        {mainCategories.map(([key, data], index) => (
+          <button 
+            class={`main-tab group flex flex-col items-center gap-5 transition-all duration-300 ease-out ${index === 0 ? 'opacity-100 scale-105' : 'opacity-40 hover:opacity-70 scale-100'}`}
+            data-main-cat={key}
+          >
+            <div class={`w-16 h-16 md:w-24 md:h-24 rounded-full flex items-center justify-center transition-all duration-300 ${index === 0 ? 'bg-zinc-800/80 border border-stone-400/30' : 'bg-zinc-900 border border-zinc-800 group-hover:bg-zinc-800/50'}`}>
+              <img 
+                src={`/icons/${key === 'hrana' ? 'food' : 'drinks'}.png`} 
+                alt={key} 
+                class={`w-8 h-8 md:w-12 md:h-12 object-contain transition-all duration-300 ${index === 0 ? 'opacity-100' : 'opacity-50 grayscale group-hover:grayscale-0'}`} 
+              />
+            </div>
+            <span class={`font-serif text-sm md:text-base tracking-[0.2em] uppercase transition-colors duration-300 ${index === 0 ? 'text-stone-300' : 'text-zinc-500'}`}>
+              {(data as any).title[lang]}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      <!-- Content Sections -->
+      <div id="menu-content-wrapper">
+        {mainCategories.map(([mainKey, mainData], mainIndex) => (
+          <section id={`section-${mainKey}`} class={`main-section ${mainIndex !== 0 ? 'hidden' : ''}`}>
+            
+            <!-- Subcategory Slider sa vidljivim strelicama na desktopu -->
+            <div class="relative w-full max-w-5xl mx-auto mb-14 flex items-center">
+              
+              <!-- Strelica Levo (samo na većim ekranima) -->
+              <button class="scroll-left hidden md:flex absolute -left-12 z-20 w-10 h-10 items-center justify-center rounded-full bg-zinc-900 border border-zinc-700 text-stone-400 hover:bg-stone-300 hover:text-zinc-950 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+              </button>
+
+              <div class="slider-container overflow-x-auto scrollbar-hide w-full flex gap-3 py-2 px-2 snap-x justify-start md:justify-center [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth">
+                {Object.entries((mainData as any).subCategories).map(([subKey, subData], subIndex) => (
+                  <button 
+                    class={`sub-tab shrink-0 snap-center px-6 py-2 text-xs md:text-sm tracking-[0.15em] uppercase transition-all duration-300 rounded-full
+                      ${subIndex === 0 
+                        ? 'bg-stone-300 text-zinc-950 font-semibold' 
+                        : 'bg-zinc-900/50 text-stone-400 border border-zinc-800 hover:bg-zinc-800 hover:text-stone-200'
+                      }`}
+                    data-parent={mainKey}
+                    data-sub-cat={subKey}
+                  >
+                    {(subData as any).title[lang]}
+                  </button>
+                ))}
+              </div>
+
+              <!-- Strelica Desno (samo na većim ekranima) -->
+              <button class="scroll-right hidden md:flex absolute -right-12 z-20 w-10 h-10 items-center justify-center rounded-full bg-zinc-900 border border-zinc-700 text-stone-400 hover:bg-stone-300 hover:text-zinc-950 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+              </button>
+            </div>
+
+            <!-- Product Grids (Čist, oštar dizajn bez svetla) -->
+            <div class="relative min-h-[400px]">
+              {Object.entries((mainData as any).subCategories).map(([subKey, subData], subIndex) => (
+                <div 
+                  id={`grid-${mainKey}-${subKey}`} 
+                  class={`product-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-opacity duration-500 ${subIndex !== 0 ? 'hidden opacity-0' : 'opacity-100'}`}
+                >
+                  {(subData as any).items.map((item: any) => (
+                    <div class="bg-zinc-900/30 border border-zinc-800/50 hover:border-stone-500/30 transition-all duration-300 p-8 flex flex-col items-center text-center justify-between h-full min-h-[220px] rounded-lg group">
+                      
+                      <div class="flex flex-col items-center w-full">
+                        <h3 class="font-serif text-lg md:text-xl text-stone-200 group-hover:text-white transition-colors tracking-widest uppercase mb-3">
+                          {item.name[lang]}
+                        </h3>
+                        
+                        {item.description[lang] && (
+                          <p class="text-xs md:text-sm text-zinc-500 font-light leading-relaxed max-w-[90%]">
+                            {item.description[lang]}
+                          </p>
+                        )}
+                      </div>
+
+                      <div class="mt-8 flex items-center gap-4">
+                        <div class="w-6 h-[1px] bg-zinc-800"></div>
+                        <span class="text-stone-300 font-medium text-xl tracking-wider">
+                          {item.price} <span class="text-xs text-zinc-500 ml-1 uppercase">{currency}</span>
+                        </span>
+                        <div class="w-6 h-[1px] bg-zinc-800"></div>
+                      </div>
+                      
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+
+          </section>
+        ))}
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Kontakt i Footer -->
+  <Contact lang={lang} />
+  <Footer lang={lang} />
+</BaseLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mainTabs = document.querySelectorAll('.main-tab');
+    const mainSections = document.querySelectorAll('.main-section');
+    const subTabs = document.querySelectorAll('.sub-tab');
+
+    // JS logika za strelice
+    const sliders = document.querySelectorAll('.slider-container');
+    const leftBtns = document.querySelectorAll('.scroll-left');
+    const rightBtns = document.querySelectorAll('.scroll-right');
+
+    leftBtns.forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        if(sliders[idx]) sliders[idx].scrollBy({ left: -250, behavior: 'smooth' });
+      });
+    });
+
+    rightBtns.forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        if(sliders[idx]) sliders[idx].scrollBy({ left: 250, behavior: 'smooth' });
+      });
+    });
+
+    // Main Tabs (Hrana/Pice)
+    mainTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const targetMain = tab.getAttribute('data-main-cat');
+
+        mainTabs.forEach(t => {
+          t.classList.remove('opacity-100', 'scale-105');
+          t.classList.add('opacity-40', 'scale-100');
+          
+          const iconContainer = t.querySelector('div');
+          if(iconContainer) {
+            iconContainer.classList.remove('bg-zinc-800/80', 'border-stone-400/30');
+            iconContainer.classList.add('bg-zinc-900', 'border-zinc-800');
+          }
+          
+          const text = t.querySelector('span');
+          if(text) {
+            text.classList.remove('text-stone-300');
+            text.classList.add('text-zinc-500');
+          }
+
+          const img = t.querySelector('img');
+          if(img) {
+            img.classList.remove('opacity-100');
+            img.classList.add('opacity-50', 'grayscale');
+          }
+        });
+
+        tab.classList.remove('opacity-40', 'scale-100');
+        tab.classList.add('opacity-100', 'scale-105');
+        
+        const activeIconContainer = tab.querySelector('div');
+        if(activeIconContainer) {
+          activeIconContainer.classList.remove('bg-zinc-900', 'border-zinc-800');
+          activeIconContainer.classList.add('bg-zinc-800/80', 'border-stone-400/30');
+        }
+
+        const activeText = tab.querySelector('span');
+        if(activeText) {
+          activeText.classList.remove('text-zinc-500');
+          activeText.classList.add('text-stone-300');
+        }
+
+        const activeImg = tab.querySelector('img');
+        if(activeImg) {
+          activeImg.classList.remove('opacity-50', 'grayscale');
+          activeImg.classList.add('opacity-100');
+        }
+
+        mainSections.forEach(sec => {
+          if (sec.id === `section-${targetMain}`) {
+            sec.classList.remove('hidden');
+            const firstSubTab = sec.querySelector('.sub-tab') as HTMLElement;
+            if (firstSubTab) firstSubTab.click();
+          } else {
+            sec.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Sub Tabs (Kategorije)
+    subTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const parentId = tab.getAttribute('data-parent');
+        const subId = tab.getAttribute('data-sub-cat');
+        const parentSection = document.getElementById(`section-${parentId}`);
+
+        if (!parentSection) return;
+
+        parentSection.querySelectorAll('.sub-tab').forEach(t => {
+          t.classList.remove('bg-stone-300', 'text-zinc-950', 'font-semibold');
+          t.classList.add('bg-zinc-900/50', 'text-stone-400', 'border', 'border-zinc-800');
+        });
+        
+        tab.classList.remove('bg-zinc-900/50', 'text-stone-400', 'border', 'border-zinc-800');
+        tab.classList.add('bg-stone-300', 'text-zinc-950', 'font-semibold');
+
+        parentSection.querySelectorAll('.product-grid').forEach(grid => {
+          if (grid.id === `grid-${parentId}-${subId}`) {
+            grid.classList.remove('hidden');
+            setTimeout(() => grid.classList.remove('opacity-0'), 50);
+          } else {
+            grid.classList.add('hidden', 'opacity-0');
+          }
+        });
+      });
+    });
+  });
+</script>

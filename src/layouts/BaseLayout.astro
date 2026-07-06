@@ -1,5 +1,7 @@
 ---
 // src/layouts/BaseLayout.astro
+import Navbar from '../components/Navbar.astro';
+import '../styles/global.css'; // OVO JE POKRENULO TAILWIND!
 
 interface Props {
   title: string;
@@ -8,14 +10,13 @@ interface Props {
 }
 
 // Izvlačimo props koje prosleđujemo iz svake stranice (index.astro, menu.astro itd.)
-// Postavljamo default vrednosti ako se ne proslede
 const { 
   title, 
   description = "Sky Restaurant & Pool Bar - Вкус, забава и летна магија.", 
   lang = "mk" 
 } = Astro.props;
 
-// Definišemo osnovni URL za Open Graph (prilagodi domenu)
+// Definišemo osnovni URL za Open Graph
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://skyrestaurant.mk');
 ---
 
@@ -33,31 +34,25 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://skyresta
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
     
-    <!-- Open Graph / Facebook (Za deljenje linka na mrežama) -->
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <!-- Stavi neku lepu sliku restorana u public/img/ za ovaj share preview -->
+    <!-- Slike restorana u public/img/ za share preview -->
     <meta property="og:image" content={new URL('/img/sky-og-image.jpg', Astro.url)} />
 
-    <!-- Google Fonts (Ako koristiš specifične fontove sa starog sajta, dodajemo ih ovde) -->
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
-    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <!-- Google Fonts dodajemo ovde ako zatreba -->
   </head>
 
-  <!-- Tailwind klase na body-ju za globalni stil. 
-       Prilagodi boju pozadine i teksta (npr. bg-[#f8f5f0] iz starog dizajna) -->
-  <body class="bg-[#f8f6f0] text-[#333333] antialiased font-sans min-h-screen flex flex-col">
+  <!-- Globalni stil na body-ju -->
+  <body class="bg-[#f8f6f0] text-[#333333] antialiased font-sans min-h-screen flex flex-col overflow-x-hidden">
     
-    <!-- Ovde ćemo ubaciti <Navbar lang={lang} /> komponentu -->
+    <Navbar lang={lang} />
 
-    <!-- <slot /> je mesto gde se ubacuje sadržaj svake pojedinačne stranice -->
     <main class="flex-grow">
       <slot />
     </main>
-
-    <!-- Ovde ćemo ubaciti <Footer lang={lang} /> komponentu -->
 
   </body>
 </html>

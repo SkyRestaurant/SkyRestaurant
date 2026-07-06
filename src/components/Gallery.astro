@@ -1,0 +1,114 @@
+---
+// src/components/Gallery.astro
+import { Image } from 'astro:assets';
+import mk from '../i18n/mk.json';
+import en from '../i18n/en.json';
+
+interface Props {
+  lang: 'mk' | 'en';
+}
+
+const { lang } = Astro.props;
+const ui = lang === 'en' ? en : mk;
+
+// Učitavanje slika
+const imageFiles = import.meta.glob('../assets/gallery/*.{jpeg,jpg,png,webp}', { eager: true });
+const images = Object.values(imageFiles).map((file: any) => file.default);
+---
+
+<section id="gallery" class="w-full bg-[#1D1D1D] py-24 md:py-32 px-4 relative z-10">
+  <!-- <div class="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-screen" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div> -->
+
+  <div class="max-w-7xl mx-auto">
+    
+    <!-- Naslov sekcije -->
+    <div class="flex flex-col items-center text-center mb-16 animate-on-scroll opacity-0 translate-y-8 transition-all duration-1000 ease-out">
+      <div class="flex items-center justify-center gap-4 mb-4">
+        <div class="w-10 h-[1px] bg-accent-gold"></div>
+        <span class="text-accent-gold tracking-[0.3em] uppercase text-[10px] font-bold">{ui["gallery.tag"]}</span>
+        <div class="w-10 h-[1px] bg-accent-gold"></div>
+      </div>
+      <h2 class="font-serif text-4xl md:text-5xl font-light text-white uppercase tracking-wider">
+        {ui["gallery.title"]}
+      </h2>
+    </div>
+
+    <!-- Grid Galerije -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-12">
+      {images.map((img, index) => (
+        <div 
+          class={`gallery-item group relative w-full aspect-square overflow-hidden cursor-pointer bg-[#15120f] ${index >= 8 ? 'hidden' : ''}`}
+          data-index={index}
+          data-src={img.src}
+        >
+          <Image 
+            src={img} 
+            alt={`Sky Restaurant Gallery ${index + 1}`} 
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:opacity-70"
+            width={600}
+            height={600}
+          />
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <svg class="w-8 h-8 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4" />
+            </svg>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Show More Dugme -->
+    {images.length > 8 && (
+      <div class="flex justify-center">
+        <button 
+          id="toggle-gallery-btn" 
+          class="border border-accent-gold text-accent-gold hover:bg-accent-gold hover:text-black transition-colors duration-300 px-8 py-3 uppercase tracking-widest font-semibold text-xs"
+          data-show-more={ui["gallery.show_more"]}
+          data-show-less={ui["gallery.show_less"]}
+        >
+          {ui["gallery.show_more"]}
+        </button>
+      </div>
+    )}
+
+  </div>
+</section>
+
+<!-- Lightbox Overlay -->
+<div id="lightbox" class="fixed inset-0 z-[100] bg-black/95 hidden flex-col justify-center items-center backdrop-blur-sm opacity-0 transition-opacity duration-300">
+  
+  <!-- 'X' Button -->
+  <div class="absolute top-4 right-4 md:top-6 md:right-8 z-[110]">
+    <button id="lightbox-close" class="text-white/70 hover:text-accent-gold transition-colors p-2 focus:outline-none">
+      <svg class="w-10 h-10 md:w-12 md:h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Central Layout Container -->
+  <!-- h-full osigurava da zauzmemo ceo ekran, a max-h-[80vh] na slici sprečava udaranje u vrh -->
+  <div class="flex items-center justify-center gap-2 md:gap-8 w-full h-full p-4 md:p-8">
+    
+    <!-- Prev Button -->
+    <button id="lightbox-prev" class="shrink-0 text-white/50 hover:text-accent-gold transition-colors p-2 focus:outline-none z-[110]">
+      <svg class="w-10 h-10 md:w-14 md:h-14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+
+    <!-- Image -->
+    <!-- Dodato max-h-[80vh] da sčuva 10vh prostora gore i dole -->
+    <img id="lightbox-img" src="" alt="Gallery Preview" class="max-w-[70vw] md:max-w-[80vw] max-h-[80vh] object-contain shadow-2xl scale-95 transition-transform duration-300" />
+
+    <!-- Next Button -->
+    <button id="lightbox-next" class="shrink-0 text-white/50 hover:text-accent-gold transition-colors p-2 focus:outline-none z-[110]">
+      <svg class="w-10 h-10 md:w-14 md:h-14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+    
+  </div>
+</div>
+
+<script src="../scripts/gallery.ts"></script>

@@ -1,0 +1,94 @@
+---
+import mk from '../i18n/mk.json';
+import en from '../i18n/en.json';
+
+interface Props {
+  lang: 'mk' | 'en';
+}
+
+const { lang } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+let toggleUrl = '/';
+if (lang === 'en') {
+  toggleUrl = currentPath.replace('/en', '') || '/';
+} else {
+  toggleUrl = `/en${currentPath === '/' ? '' : currentPath}`;
+}
+toggleUrl = toggleUrl.replace(/\/\//g, '/');
+if (toggleUrl === '') toggleUrl = '/';
+
+const ui = lang === 'en' ? en : mk;
+const pathname = Astro.url.pathname;
+const isMenuPage = pathname.includes('/menu');
+---
+
+<header 
+  id="navbar" 
+  class="fixed w-full top-0 z-50 transition-colors duration-300 bg-black/50 backdrop-blur-md py-4 text-white"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+    
+    <!-- Logo -->
+    <a href={lang === 'en' ? '/en' : '/'} class="flex-shrink-0">
+      <img src="/icons/Logo.svg" alt="Sky Restaurant" class="w-16 object-contain" />
+    </a>
+
+    <!-- Desktop Navigacija -->
+    <nav class="hidden md:flex space-x-8 items-center uppercase text-sm font-medium tracking-widest">
+      <a href={lang === 'en' ? '/en' : '/'} class="hover:text-accent-gold transition-colors">{ui["navbar.home"]}</a>
+
+      {!isMenuPage && (
+        <a href={lang === 'en' ? '/en/menu' : '/menu'} class="hover:text-accent-gold transition-colors">{ui["navbar.menu"]}</a>
+      )}
+      
+      <a href={isMenuPage ? "/#services" : "#services"} class="hover:text-accent-gold transition-colors">{ui["navbar.services"]}</a>
+      <a href={isMenuPage ? "/#gallery" : "#gallery"} class="hover:text-accent-gold transition-colors">{ui["navbar.gallery"]}</a>
+      <a href={isMenuPage ? "/#about" : "#about"} class="hover:text-accent-gold transition-colors">{ui["navbar.about"]}</a>
+      <a href="#contact" class="hover:text-accent-gold transition-colors">{ui["navbar.contact"]}</a>
+    </nav>
+
+    <!-- Desktop Jezici -->
+    <div class="hidden md:flex items-center gap-3">
+      <a href={toggleUrl} class="hover:scale-105 transition-transform">
+        <img src={lang === 'en' ? "/icons/mk.png" : "/icons/en.png"} alt="Toggle Language" class="w-7 h-7 rounded-[2px] object-cover opacity-90 hover:opacity-100" />
+      </a>
+    </div>
+
+    <!-- Mobile UI: Jezik + Hamburger -->
+    <div class="md:hidden flex items-center gap-5">
+      <a href={toggleUrl} class="hover:opacity-80 transition-opacity">
+         <img src={lang === 'en' ? "/icons/mk.png" : "/icons/en.png"} alt="Toggle Language" class="w-7 h-7 rounded-[2px] object-cover" />
+      </a>
+      
+      <!-- Hamburger Dugme -->
+      <button id="mobile-menu-btn" class="w-8 h-8 flex flex-col justify-center gap-[6px] relative focus:outline-none z-50">
+        <span class="hamburger-top w-full h-[2px] bg-white block rounded-full"></span>
+        <span class="hamburger-middle w-full h-[2px] bg-white block rounded-full"></span>
+        <span class="hamburger-bottom w-full h-[2px] bg-white block rounded-full"></span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Mobile Dropdown Meni (Povećana slova, veći razmaci) -->
+  <div 
+    id="mobile-menu" 
+    class="md:hidden absolute top-full left-0 w-full bg-navbar-bg shadow-2xl transition-all duration-300 ease-out opacity-0 invisible -translate-y-4 h-screen"
+  >
+    <div class="px-6 py-10 space-y-6 text-center flex flex-col uppercase text-lg tracking-widest font-medium">
+      <a href={lang === 'en' ? '/en' : '/'} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.home"]}</a>
+
+      {!isMenuPage && (
+        <a href={lang === 'en' ? '/en/menu' : '/menu'} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.menu"]}</a>
+      )}
+
+      <a href={isMenuPage ? "/#services" : "#services"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.services"]}</a>
+      <a href={isMenuPage ? "/#gallery" : "#gallery"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.gallery"]}</a>
+      <a href={isMenuPage ? "/#about" : "#about"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.about"]}</a>
+      <a href={isMenuPage ? "/#contact" : "#contact"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.contact"]}</a>
+    </div>
+  </div>
+</header>
+
+<script src="../scripts/navbar.ts"></script>

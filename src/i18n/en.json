@@ -1,0 +1,47 @@
+{
+  "navbar.home": "HOME",
+  "navbar.menu": "MENU",
+  "navbar.services": "SERVICES",
+  "navbar.gallery": "GALLERY",
+  "navbar.about": "ABOUT US",
+  "navbar.contact": "CONTACT",
+  "hero.welcome": "Welcome",
+  "hero.title_part1": "TASTE, FUN AND",
+  "hero.title_part2": "SUMMER MAGIC",
+  "hero.text": "Your favorite spot for great food and pure relaxation. Enjoy every moment.",
+  "hero.btn_restaurant": "VIEW MENU",
+
+  "services.tag": "Experience",
+  "services.title": "OUR SERVICES",
+  "services.card1.title": "Fine Dining",
+  "services.card1.desc": "Specialties prepared with passion and the freshest ingredients.",
+  "services.card2.title": "Exclusive Pool",
+  "services.card2.desc": "An oasis of peace with refreshing cocktails and premium service.",
+  "services.card3.title": "Private Events",
+  "services.card3.desc": "The perfect ambiance for your most important celebrations.",
+
+  "gallery.tag": "Ambiance",
+  "gallery.title": "OUR STORY",
+  "gallery.show_more": "SHOW MORE",
+  "gallery.show_less": "SHOW LESS",
+
+  "about.tag": "Our Story",
+  "about.title": "More than a restaurant",
+  "about.subtitle": "Tradition, taste, and summer magic.",
+  "about.text_1": "Sky Restaurant & Pool Bar was born from a vision to create a unique place where fine dining meets a relaxed summer atmosphere. Nestled in the heart of nature, we offer an escape from the ordinary.",
+  "about.text_2": "Our team uses only the freshest ingredients to prepare dishes that awaken all the senses. Whether you seek a romantic dinner, a family lunch, or relaxation by the pool – Sky is your destination.",
+  "about.btn": "CONTACT US",
+
+  "contact.tag": "Contact",
+  "contact.title": "Information",
+  "contact.address": "Address",
+  "contact.address_val": "Mirkovci, Cucer-Sandevo, Skopje",
+  "contact.phone": "Phone",
+  "contact.phone_val": "+389 71 527 184",
+  "contact.hours": "Working Hours",
+  "contact.hours_val": "Monday - Sunday: 08:00 - 24:00",
+  "contact.social": "Social Media",
+  "contact.map_link": "View on Google Maps",
+
+  "footer.text": "All rights reserved."
+}

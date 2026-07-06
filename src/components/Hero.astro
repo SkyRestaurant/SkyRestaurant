@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import bg1 from '../assets/hero/bg1.webp'; // Tvoja slika sa bazenom/noću
+import mk from '../i18n/mk.json';
+import en from '../i18n/en.json';
+
+interface Props {
+  lang: 'mk' | 'en';
+}
+
+const { lang } = Astro.props;
+const ui = lang === 'en' ? en : mk;
+---
+
+<section class="relative w-full min-h-[100svh] flex items-center justify-center overflow-hidden">
+  
+  <div class="absolute inset-0 z-0">
+    <Image 
+      src={bg1} 
+      alt="Sky Restaurant & Pool Bar" 
+      class="absolute inset-0 w-full h-full object-cover scale-105" 
+    />
+    <div class="absolute inset-0 bg-black/85 z-10"></div>
+  </div>
+
+  <div class="relative z-20 text-center px-4 max-w-4xl flex flex-col items-center mt-12 animate-fade-in-up">
+    
+    <p class="font-display text-4xl md:text-5xl text-accent-gold mb-6 tracking-wider lowercase drop-shadow-md">
+      {ui["hero.welcome"]}
+    </p>
+
+    <h1 class="font-serif text-5xl sm:text-6xl md:text-7xl font-bold tracking-wide text-white uppercase leading-tight mb-6 drop-shadow-lg">
+      {ui["hero.title_part1"]}
+      <span class="text-white/95">{ui["hero.title_part2"]}</span>
+    </h1>
+
+    <p class="font-sans text-sm md:text-base text-gray-200 max-w-2xl mx-auto mb-10 tracking-widest uppercase font-light">
+      {ui["hero.text"]}
+    </p>
+    
+    <a 
+      href={lang === 'en' ? '/en/menu' : '/menu'} 
+      class="inline-block border border-accent-gold bg-accent-gold/25 hover:bg-accent-gold text-white hover:text-[#0a0a0a] transition-all duration-300 px-10 py-4 uppercase tracking-widest font-bold text-sm rounded-sm backdrop-blur-sm shadow-[0_0_15px_rgba(203,162,88,0.2)] hover:shadow-[0_0_25px_rgba(203,162,88,0.5)] hover:-translate-y-1"
+    >
+      {ui["hero.btn_restaurant"]}
+    </a>
+
+  </div>
+</section>
+
+<style>
+  .animate-fade-in-up {
+    animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

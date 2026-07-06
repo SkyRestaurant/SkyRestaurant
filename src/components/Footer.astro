@@ -1,0 +1,16 @@
+---
+import mk from '../i18n/mk.json';
+import en from '../i18n/en.json';
+
+interface Props {
+  lang: 'mk' | 'en';
+}
+
+const { lang } = Astro.props;
+const year = new Date().getFullYear();
+const ui = lang === 'en' ? en : mk;
+---
+
+<footer class="w-full bg-[#0a0a0a] py-4 text-center border-t border-accent-gold/20">
+    <p >&copy; {year} Sky Restaurant & Pool Bar. {ui["footer.text"]}</p>
+</footer>
