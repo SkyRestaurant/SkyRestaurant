@@ -41,10 +41,15 @@ const isMenuPage = pathname.includes('/menu');
       {!isMenuPage && (
         <a href={lang === 'en' ? '/en/menu' : '/menu'} class="hover:text-accent-gold transition-colors">{ui["navbar.menu"]}</a>
       )}
-      
+<!--       
       <a href={isMenuPage ? "/#services" : "#services"} class="hover:text-accent-gold transition-colors">{ui["navbar.services"]}</a>
       <a href={isMenuPage ? "/#gallery" : "#gallery"} class="hover:text-accent-gold transition-colors">{ui["navbar.gallery"]}</a>
       <a href={isMenuPage ? "/#about" : "#about"} class="hover:text-accent-gold transition-colors">{ui["navbar.about"]}</a>
+      <a href="#contact" class="hover:text-accent-gold transition-colors">{ui["navbar.contact"]}</a>
+    </nav> -->
+      <a href={isMenuPage ? (lang === 'en' ? "/en/#services" : "/#services") : "#services"} class="hover:text-accent-gold transition-colors">{ui["navbar.services"]}</a>
+      <a href={isMenuPage ? (lang === 'en' ? "/en/#gallery" : "/#gallery") : "#gallery"} class="hover:text-accent-gold transition-colors">{ui["navbar.gallery"]}</a>
+      <a href={isMenuPage ? (lang === 'en' ? "/en/#about" : "/#about") : "#about"} class="hover:text-accent-gold transition-colors">{ui["navbar.about"]}</a>
       <a href="#contact" class="hover:text-accent-gold transition-colors">{ui["navbar.contact"]}</a>
     </nav>
 
@@ -83,9 +88,9 @@ const isMenuPage = pathname.includes('/menu');
         <a href={lang === 'en' ? '/en/menu' : '/menu'} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.menu"]}</a>
       )}
 
-      <a href={isMenuPage ? "/#services" : "#services"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.services"]}</a>
-      <a href={isMenuPage ? "/#gallery" : "#gallery"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.gallery"]}</a>
-      <a href={isMenuPage ? "/#about" : "#about"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.about"]}</a>
+      <a href={isMenuPage ? (lang === 'en' ? "/en/#services" : "/#services") : "#services"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.services"]}</a>
+      <a href={isMenuPage ? (lang === 'en' ? "/en/#gallery" : "/#gallery") : "#gallery"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.gallery"]}</a>
+      <a href={isMenuPage ? (lang === 'en' ? "/en/#about" : "/#about") : "#about"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.about"]}</a>
       <a href="#contact" class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.contact"]}</a>
     </div>
   </div>

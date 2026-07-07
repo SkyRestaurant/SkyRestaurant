@@ -42,6 +42,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://skyresta
     <!-- Slike restorana u public/img/ za share preview -->
     <meta property="og:image" content={new URL('/img/sky-og-image.jpg', Astro.url)} />
 
+    
     <!-- Google Fonts dodajemo ovde ako zatreba -->
   </head>
 
@@ -54,5 +55,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://skyresta
       <slot />
     </main>
 
+    <!-- Back to Top Button -->
+    <button 
+      id="back-to-top" 
+      class="fixed bottom-8 right-8 z-50 flex items-center justify-center w-12 h-12 bg-dark text-lightbrown rounded-sm opacity-0 translate-y-10 pointer-events-none transition-all duration-500 hover:bg-darkbrown hover:text-white shadow-xl focus:outline-none"
+      aria-label="Back to top"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+      </svg>
+    </button>
+
+  <script src="../scripts/baselayout.ts"></script>
   </body>
 </html>
