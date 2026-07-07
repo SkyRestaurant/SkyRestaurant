@@ -1,110 +1,125 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Selektovanje elemenata
-  const mainTabs = document.querySelectorAll<HTMLButtonElement>('.main-tab');
-  const mainSections = document.querySelectorAll<HTMLElement>('.main-section');
-  const subTabs = document.querySelectorAll<HTMLButtonElement>('.sub-tab');
-  const sliders = document.querySelectorAll<HTMLElement>('.slider-container');
+  // 1. Skrol Strelice
   const leftBtns = document.querySelectorAll<HTMLButtonElement>('.scroll-left');
   const rightBtns = document.querySelectorAll<HTMLButtonElement>('.scroll-right');
 
-  // 2. Skrol logika (Strelica Levo / Desno)
-  leftBtns.forEach((btn, idx) => {
+  leftBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      if (sliders[idx]) {
-        sliders[idx].scrollBy({ left: -200, behavior: 'smooth' });
-      }
+      // Gadja slider kontejner koji je pored strelice
+      const container = btn.nextElementSibling as HTMLElement;
+      if (container) container.scrollBy({ left: -250, behavior: 'smooth' });
     });
   });
 
-  rightBtns.forEach((btn, idx) => {
+  rightBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      if (sliders[idx]) {
-        sliders[idx].scrollBy({ left: 200, behavior: 'smooth' });
-      }
+      const container = btn.previousElementSibling as HTMLElement;
+      if (container) container.scrollBy({ left: 250, behavior: 'smooth' });
     });
   });
 
-  // 3. Logika glavnih tabova (Hrana / Pijalozi)
-  mainTabs.forEach((tab) => {
+  // 2. Glavni Tabovi (Hrana / Piće)
+  const mainTabs = document.querySelectorAll<HTMLButtonElement>('.main-tab');
+  const mainSections = document.querySelectorAll<HTMLElement>('.main-section');
+
+  mainTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      const targetMain = tab.getAttribute('data-main-cat');
-      if (!targetMain) return;
+      const targetKey = tab.getAttribute('data-main-cat');
+      if (!targetKey) return;
 
-      // Resetuj sve glavne tabove
       mainTabs.forEach(t => {
-        t.classList.remove('border-darkbrown', 'opacity-100');
-        t.classList.add('border-transparent', 'opacity-60');
+        t.classList.remove('border-darkbrown', 'opacity-100', 'is-active');
+        t.classList.add('border-transparent', 'opacity-50', 'hover:opacity-100', 'hover:border-darkbrown/40');
         
-        const text = t.querySelector('span');
-        if (text) {
-          text.classList.remove('text-darkbrown', 'font-semibold');
-          text.classList.add('text-dark');
-        }
-
-        const img = t.querySelector('img');
+        const img = t.querySelector('.tab-icon');
         if (img) {
           img.classList.remove('grayscale-0');
           img.classList.add('grayscale');
         }
+
+        const text = t.querySelector('.tab-text');
+        if (text) {
+          text.classList.remove('text-darkbrown', 'font-bold');
+          text.classList.add('text-dark/70');
+        }
       });
 
-      // Setuj aktivni glavni tab
-      tab.classList.remove('border-transparent', 'opacity-60');
-      tab.classList.add('border-darkbrown', 'opacity-100');
+      tab.classList.remove('border-transparent', 'opacity-50', 'hover:opacity-100', 'hover:border-darkbrown/40');
+      tab.classList.add('border-darkbrown', 'opacity-100', 'is-active');
       
-      const activeText = tab.querySelector('span');
-      if (activeText) {
-        activeText.classList.remove('text-dark');
-        activeText.classList.add('text-darkbrown', 'font-semibold');
-      }
-
-      const activeImg = tab.querySelector('img');
+      const activeImg = tab.querySelector('.tab-icon');
       if (activeImg) {
         activeImg.classList.remove('grayscale');
         activeImg.classList.add('grayscale-0');
       }
 
-      // Prikazivanje odgovarajuce sekcije
+      const activeText = tab.querySelector('.tab-text');
+      if (activeText) {
+        activeText.classList.remove('text-dark/70');
+        activeText.classList.add('text-darkbrown', 'font-bold');
+      }
+
       mainSections.forEach(sec => {
-        if (sec.id === `section-${targetMain}`) {
+        if (sec.id === `section-${targetKey}`) {
           sec.classList.remove('hidden');
-          // Automatski klikni prvi pod-tab u novoj sekciji
+          sec.classList.add('block');
+          
+          const slider = sec.querySelector('.slider-container');
+          if (slider) slider.scrollLeft = 0;
+          
           const firstSubTab = sec.querySelector<HTMLButtonElement>('.sub-tab');
           if (firstSubTab) firstSubTab.click();
         } else {
+          sec.classList.remove('block');
           sec.classList.add('hidden');
         }
       });
     });
   });
 
-  // 4. Logika pod-tabova (Kategorije)
+  // 3. Pod-tabovi (Salati, Pice, itd. sa novim PREMIUM GRADIENT klasama)
+  const subTabs = document.querySelectorAll<HTMLButtonElement>('.sub-tab');
+  const productGrids = document.querySelectorAll<HTMLElement>('.product-grid');
+
   subTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-      const parentId = tab.getAttribute('data-parent');
-      const subId = tab.getAttribute('data-sub-cat');
-      if (!parentId || !subId) return;
+      const parentKey = tab.getAttribute('data-parent');
+      const subKey = tab.getAttribute('data-sub-cat');
+      if (!parentKey || !subKey) return;
 
-      const parentSection = document.getElementById(`section-${parentId}`);
-      if (!parentSection) return;
-
-      // Resetuj sve pod-tabove u trenutnoj sekciji
-      parentSection.querySelectorAll('.sub-tab').forEach(t => {
-        t.classList.remove('bg-darkbrown', 'text-white', 'font-medium', 'shadow-md');
-        t.classList.add('bg-white', 'text-dark/70', 'border', 'border-dark/10');
-      });
+      const siblingTabs = document.querySelectorAll(`.sub-tab[data-parent="${parentKey}"]`);
       
-      // Setuj aktivni pod-tab
-      tab.classList.remove('bg-white', 'text-dark/70', 'border', 'border-dark/10');
-      tab.classList.add('bg-darkbrown', 'text-white', 'font-medium', 'shadow-md');
+      // Resetuj inaktivno stanje (skidamo gradient i senku)
+      siblingTabs.forEach(t => {
+        t.classList.remove('bg-gradient-to-tr', 'from-darkbrown', 'to-accent-gold', 'text-white', 'font-medium', 'shadow-md', 'is-active');
+        t.classList.add('bg-transparent', 'text-dark/70', 'hover:text-darkbrown', 'hover:bg-darkbrown/5');
+      });
 
-      // Prikazivanje odgovarajuceg grida proizvoda
-      parentSection.querySelectorAll('.product-grid').forEach(grid => {
-        if (grid.id === `grid-${parentId}-${subId}`) {
-          grid.classList.remove('hidden');
-          setTimeout(() => grid.classList.remove('opacity-0'), 50); // Timeout za smooth fade-in
-        } else {
-          grid.classList.add('hidden', 'opacity-0');
+      // Postavi premium gradient na kliknuti tab
+      tab.classList.remove('bg-transparent', 'text-dark/70', 'hover:text-darkbrown', 'hover:bg-darkbrown/5');
+      tab.classList.add('bg-gradient-to-tr', 'from-darkbrown', 'to-accent-gold', 'text-white', 'font-medium', 'shadow-md', 'is-active');
+
+      // Animacija strelica za feedback
+      const leftBtn = tab.closest('.relative')?.querySelector('.scroll-left');
+      const rightBtn = tab.closest('.relative')?.querySelector('.scroll-right');
+      if(leftBtn) {
+          leftBtn.classList.add('bg-darkbrown', 'text-white');
+          setTimeout(() => leftBtn.classList.remove('bg-darkbrown', 'text-white'), 200);
+      }
+      if(rightBtn) {
+          rightBtn.classList.add('bg-darkbrown', 'text-white');
+          setTimeout(() => rightBtn.classList.remove('bg-darkbrown', 'text-white'), 200);
+      }
+
+      // Prikazi grid
+      productGrids.forEach(grid => {
+        if (grid.id.startsWith(`grid-${parentKey}`)) {
+          if (grid.id === `grid-${parentKey}-${subKey}`) {
+            grid.classList.remove('hidden');
+            setTimeout(() => grid.classList.remove('opacity-0'), 10);
+          } else {
+            grid.classList.add('hidden', 'opacity-0');
+          }
         }
       });
     });
