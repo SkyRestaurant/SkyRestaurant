@@ -74,7 +74,7 @@ const isMenuPage = pathname.includes('/menu');
   <!-- Mobile Dropdown Meni (Povećana slova, veći razmaci) -->
   <div 
     id="mobile-menu" 
-    class="md:hidden absolute top-full left-0 w-full bg-navbar-bg shadow-2xl transition-all duration-300 ease-out opacity-0 invisible -translate-y-4 h-screen"
+    class="md:hidden absolute top-[calc(100%-1px)] left-0 w-full bg-navbar-bg shadow-2xl transition-all duration-300 ease-out opacity-0 invisible -translate-y-4 h-screen"
   >
     <div class="px-6 py-10 space-y-6 text-center flex flex-col uppercase text-lg tracking-widest font-medium">
       <a href={lang === 'en' ? '/en' : '/'} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.home"]}</a>
@@ -86,7 +86,7 @@ const isMenuPage = pathname.includes('/menu');
       <a href={isMenuPage ? "/#services" : "#services"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.services"]}</a>
       <a href={isMenuPage ? "/#gallery" : "#gallery"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.gallery"]}</a>
       <a href={isMenuPage ? "/#about" : "#about"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.about"]}</a>
-      <a href={isMenuPage ? "/#contact" : "#contact"} class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.contact"]}</a>
+      <a href="#contact" class="block py-2 hover:text-accent-gold transition-colors">{ui["navbar.contact"]}</a>
     </div>
   </div>
 </header>

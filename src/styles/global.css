@@ -3,7 +3,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 @import "tailwindcss";
 
-
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -11,36 +10,41 @@
   --font-serif: 'Playfair Display', serif;
   --font-display: 'Great Vibes', cursive;
   
-  --color-lightbrown: #F2EFEB;
+  --color-lightbrown: #F2EFEB; /* Topla, skupa bež/bela baza */
   --color-darkbrown: #9c7a4e;
-  --color-dark: #262626;
+  --color-dark: #262626; /* Skupa tamno siva, bolja od čistog crnila (#000) */
   
   /* NOVA PALETA - 2026 Minimalist Luxury */
-  --color-accent-gold: #cba258; /* Elegantna šampanj-zlatna umesto vrišteće narandžaste */
-  --color-navbar-bg: #0a0a0a;   /* Prava, duboka tamna pozadina */
+  --color-accent-gold: #cba258; /* Elegantna šampanj-zlatna */
+  --color-navbar-bg: #0a0a0a;   
 }
 
 @layer base {
   body {
-    /* Primenjujemo tvoj sans font (Montserrat/Mulish) i default boje */
-    @apply font-sans bg-lightbrown text-darkbrown antialiased min-h-screen;
+    /* Promenjeno u text-dark zbog savršenog kontrasta i čitljivosti */
+    @apply font-sans bg-lightbrown text-dark antialiased min-h-screen selection:bg-accent-gold selection:text-white;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    /* Automatski primenjuje Playfair na sve naslove */
+    @apply font-serif text-dark;
   }
 }
 
 .animate-fade-in-up {
-    animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-    opacity: 0;
-    transform: translateY(20px);
-  }
+  animation: fadeInUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
 
-  @keyframes fadeInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
+}
 
-/* Animacija za Hamburger -> X (Korigovana za savršeno poravnanje) */
+/* Animacija za Hamburger -> X */
 .hamburger-top,
 .hamburger-middle,
 .hamburger-bottom {
@@ -49,7 +53,7 @@
 }
 
 .open .hamburger-top {
-  transform: translateY(8px) rotate(45deg); /* Promenjeno sa 10px na 8px */
+  transform: translateY(8px) rotate(45deg);
 }
 
 .open .hamburger-middle {
@@ -57,5 +61,5 @@
 }
 
 .open .hamburger-bottom {
-  transform: translateY(-8px) rotate(-45deg); /* Promenjeno sa -10px na -8px */
+  transform: translateY(-8px) rotate(-45deg);
 }

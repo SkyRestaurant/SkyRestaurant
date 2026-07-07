@@ -16,53 +16,58 @@ const imageFiles = import.meta.glob('../assets/gallery/*.{jpeg,jpg,png,webp}', {
 const images = Object.values(imageFiles).map((file: any) => file.default);
 ---
 
-<section id="gallery" class="w-full bg-[#1D1D1D] py-24 md:py-32 px-4 relative z-10">
-  <!-- <div class="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-screen" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div> -->
+<section id="gallery" class="w-full bg-dark py-24 md:py-32 px-4 relative z-10 overflow-hidden">
+  
+  <!-- Premium Ambience Background (Razbija monotoniju) -->
+  <div class="absolute top-0 left-0 w-[60vw] h-[60vw] bg-accent-gold/5 blur-[150px] rounded-full pointer-events-none mix-blend-screen"></div>
+  <div class="absolute bottom-0 right-0 w-[50vw] h-[50vw] bg-accent-gold/5 blur-[120px] rounded-full pointer-events-none mix-blend-screen"></div>
 
-  <div class="max-w-7xl mx-auto">
+  <div class="max-w-7xl mx-auto relative z-10">
     
-    <!-- Naslov sekcije -->
+    <!-- Naslov sekcije (Prati stil iz Services) -->
     <div class="flex flex-col items-center text-center mb-16 animate-on-scroll opacity-0 translate-y-8 transition-all duration-1000 ease-out">
-      <div class="flex items-center justify-center gap-4 mb-4">
-        <div class="w-10 h-[1px] bg-accent-gold"></div>
-        <span class="text-accent-gold tracking-[0.3em] uppercase text-[10px] font-bold">{ui["gallery.tag"]}</span>
-        <div class="w-10 h-[1px] bg-accent-gold"></div>
+      <div class="flex items-center justify-center gap-6 mb-4">
+        <div class="w-16 md:w-24 h-[1px] bg-gradient-to-r from-transparent to-accent-gold"></div>
+        <span class="text-accent-gold font-display text-3xl md:text-4xl lowercase drop-shadow-sm">{ui["gallery.tag"]}</span>
+        <div class="w-16 md:w-24 h-[1px] bg-gradient-to-l from-transparent to-accent-gold"></div>
       </div>
-      <h2 class="font-serif text-4xl md:text-5xl font-light text-white uppercase tracking-wider">
+      <h2 class="font-serif text-4xl md:text-5xl font-medium text-lightbrown uppercase tracking-widest">
         {ui["gallery.title"]}
       </h2>
     </div>
 
-    <!-- Grid Galerije -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-12">
+    <!-- Masonry Grid Galerije -->
+    <div class="columns-1 sm:columns-2 lg:columns-3 gap-4 md:gap-6 space-y-4 md:space-y-6 mb-16">
       {images.map((img, index) => (
-        <div 
-          class={`gallery-item group relative w-full aspect-square overflow-hidden cursor-pointer bg-[#15120f] ${index >= 8 ? 'hidden' : ''}`}
+        <div
+          class={`gallery-item group relative w-full overflow-hidden cursor-pointer rounded-sm bg-black break-inside-avoid shadow-lg ${index >= 9 ? 'hidden' : ''}`}
           data-index={index}
           data-src={img.src}
         >
-          <Image 
-            src={img} 
-            alt={`Sky Restaurant Gallery ${index + 1}`} 
-            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:opacity-70"
-            width={600}
-            height={600}
+          <Image
+            src={img}
+            alt={`Sky Restaurant Gallery ${index + 1}`}
+            class="w-full h-auto object-cover transition-transform duration-[1000ms] group-hover:scale-110 group-hover:opacity-50"
           />
-          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <svg class="w-8 h-8 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4" />
-            </svg>
+          
+          <!-- Premium Hover Ikonica (Glassmorphism) -->
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+            <div class="bg-dark/40 backdrop-blur-md p-4 rounded-full border border-accent-gold/50 shadow-2xl scale-75 group-hover:scale-100 transition-transform duration-500">
+              <svg class="w-6 h-6 text-accent-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
           </div>
         </div>
       ))}
     </div>
 
     <!-- Show More Dugme -->
-    {images.length > 8 && (
-      <div class="flex justify-center">
-        <button 
-          id="toggle-gallery-btn" 
-          class="border border-accent-gold text-accent-gold hover:bg-accent-gold hover:text-black transition-colors duration-300 px-8 py-3 uppercase tracking-widest font-semibold text-xs"
+    {images.length > 9 && (
+      <div class="flex justify-center mt-10">
+        <button
+          id="toggle-gallery-btn"
+          class="relative inline-flex items-center justify-center px-10 py-4 text-xs uppercase tracking-[0.2em] font-bold text-accent-gold border border-accent-gold overflow-hidden transition-all duration-500 hover:bg-accent-gold hover:text-dark focus:outline-none"
           data-show-more={ui["gallery.show_more"]}
           data-show-less={ui["gallery.show_less"]}
         >
@@ -70,44 +75,36 @@ const images = Object.values(imageFiles).map((file: any) => file.default);
         </button>
       </div>
     )}
-
   </div>
 </section>
 
-<!-- Lightbox Overlay -->
-<div id="lightbox" class="fixed inset-0 z-[100] bg-black/95 hidden flex-col justify-center items-center backdrop-blur-sm opacity-0 transition-opacity duration-300">
+<!-- FIX: Lightbox Overlay (Strelice fiksirane za ekran) -->
+<div id="lightbox" class="fixed inset-0 z-[100] bg-dark/95 backdrop-blur-xl hidden flex-col justify-center items-center opacity-0 transition-opacity duration-300">
   
   <!-- 'X' Button -->
-  <div class="absolute top-4 right-4 md:top-6 md:right-8 z-[110]">
-    <button id="lightbox-close" class="text-white/70 hover:text-accent-gold transition-colors p-2 focus:outline-none">
-      <svg class="w-10 h-10 md:w-12 md:h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
-  </div>
+  <button id="lightbox-close" class="absolute top-4 right-4 md:top-8 md:right-8 z-[110] text-lightbrown hover:text-accent-gold transition-colors p-3 focus:outline-none">
+    <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
 
-  <!-- Central Layout Container -->
-  <!-- h-full osigurava da zauzmemo ceo ekran, a max-h-[80vh] na slici sprečava udaranje u vrh -->
-  <div class="flex items-center justify-center gap-2 md:gap-8 w-full h-full p-4 md:p-8">
-    
-    <!-- Prev Button -->
-    <button id="lightbox-prev" class="shrink-0 text-white/50 hover:text-accent-gold transition-colors p-2 focus:outline-none z-[110]">
-      <svg class="w-10 h-10 md:w-14 md:h-14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
-      </svg>
-    </button>
+  <!-- FIX: Prev Button (Zakucan levo) -->
+  <button id="lightbox-prev" class="absolute left-4 md:left-10 top-1/2 -translate-y-1/2 z-[110] bg-accent-gold text-dark hover:bg-lightbrown hover:scale-110 transition-all duration-300 p-3 md:p-4 rounded-full shadow-2xl focus:outline-none">
+    <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
 
-    <!-- Image -->
-    <!-- Dodato max-h-[80vh] da sčuva 10vh prostora gore i dole -->
-    <img id="lightbox-img" src="" alt="Gallery Preview" class="max-w-[70vw] md:max-w-[80vw] max-h-[80vh] object-contain shadow-2xl scale-95 transition-transform duration-300" />
+  <!-- FIX: Next Button (Zakucan desno) -->
+  <button id="lightbox-next" class="absolute right-4 md:right-10 top-1/2 -translate-y-1/2 z-[110] bg-accent-gold text-dark hover:bg-lightbrown hover:scale-110 transition-all duration-300 p-3 md:p-4 rounded-full shadow-2xl focus:outline-none">
+    <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
 
-    <!-- Next Button -->
-    <button id="lightbox-next" class="shrink-0 text-white/50 hover:text-accent-gold transition-colors p-2 focus:outline-none z-[110]">
-      <svg class="w-10 h-10 md:w-14 md:h-14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
-      </svg>
-    </button>
-    
+  <!-- Image Container (Ovo sada drži samo sliku) -->
+  <div class="relative w-full h-full flex items-center justify-center p-4 md:px-24 md:py-12 pointer-events-none">
+    <img id="lightbox-img" src="" alt="Gallery Preview" class="max-w-full max-h-full object-contain shadow-2xl scale-95 transition-transform duration-300 pointer-events-auto rounded-sm" />
   </div>
 </div>
 
