@@ -45,22 +45,23 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://skyresta
 
     <!-- 2. OPEN GRAPH / FACEBOOK / VIBER -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={Astro.url} />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="Sky Restaurant & Pool Bar" />
     <meta property="og:locale" content={lang === 'mk' ? 'mk_MK' : 'en_US'} />
-    <!-- ВНИМАНИЕ ЗА СЛИКАТА (Прочитај подолу) -->
-    <meta property="og:image" content={new URL('/og-image.jpg', Astro.site || Astro.url)} />
+    <!-- Fiksirana putanja za sliku -->
+    <meta property="og:image" content={new URL('/og-image.jpg', Astro.site || 'https://skyrestaurant.mk')} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
     <!-- 3. TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content={Astro.url} />
+    <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={new URL('/og-image.jpg', Astro.site || Astro.url)} />
+    <!-- Fiksirana putanja za sliku -->
+    <meta name="twitter:image" content={new URL('/og-image.jpg', Astro.site || 'https://skyrestaurant.mk')} />
   </head>
 
   <!-- Globalni stil na body-ju -->

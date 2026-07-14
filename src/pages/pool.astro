@@ -1,0 +1,128 @@
+---
+import '../styles/global.css';
+import poolMenu from '../data/pool-menu.json';
+---
+
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sky Pool Bar Menu</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style is:global>
+    html, body { background-color: #050505; }
+    body { font-family: 'Outfit', sans-serif; }
+    
+    .hide-scroll::-webkit-scrollbar { display: none; }
+    .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* AMBIJENTALNO SVETLO (Smanjen intenzitet, dodato treće svetlo u dnu) */
+    .bg-glow-1 {
+      position: fixed; top: -15%; left: -15%; width: 60vw; height: 60vw;
+      background: radial-gradient(circle, rgba(0, 168, 232, 0.05) 0%, transparent 60%);
+      z-index: 0; pointer-events: none;
+    }
+    .bg-glow-2 {
+      position: fixed; bottom: -20%; right: -20%; width: 90vw; height: 90vw;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+      z-index: 0; pointer-events: none;
+    }
+    .bg-glow-3 {
+      position: fixed; bottom: -10%; left: 15%; width: 70vw; height: 70vw;
+      background: radial-gradient(circle, rgba(0, 168, 232, 0.03) 0%, transparent 60%);
+      z-index: 0; pointer-events: none;
+    }
+
+    /* STATIČNE LINIJE (Smirenije boje, taman između prvog i drugog pokušaja) */
+    .bg-circle-1 {
+      position: fixed; top: -15%; left: -25%; width: 75vw; height: 75vw;
+      border-radius: 50%; border: 1px solid rgba(0, 168, 232, 0.12);
+      pointer-events: none; z-index: 1;
+    }
+    .bg-circle-2 {
+      position: fixed; bottom: -10%; right: -20%; width: 85vw; height: 85vw;
+      border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.05);
+      pointer-events: none; z-index: 1;
+    }
+    .bg-circle-3 {
+      position: fixed; top: 35%; right: -35%; width: 70vw; height: 70vw;
+      border-radius: 50%; border: 1px solid rgba(0, 168, 232, 0.07);
+      pointer-events: none; z-index: 1;
+    }
+    .bg-circle-4 {
+      position: fixed; bottom: 25%; left: -45%; width: 100vw; height: 100vw;
+      border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.03);
+      pointer-events: none; z-index: 1;
+    }
+    
+    /* Kontrola geometrije za veće ekrane */
+    @media (min-width: 768px) {
+      .bg-glow-1 { width: 40vw; height: 40vw; }
+      .bg-glow-2 { width: 50vw; height: 50vw; }
+      .bg-glow-3 { width: 40vw; height: 40vw; }
+      .bg-circle-1 { width: 45vw; height: 45vw; top: -10%; left: -10%; }
+      .bg-circle-2 { width: 55vw; height: 55vw; bottom: -5%; right: -10%; }
+      .bg-circle-3 { width: 40vw; height: 40vw; top: 20%; right: -15%; }
+      .bg-circle-4 { width: 60vw; height: 60vw; bottom: 10%; left: -20%; }
+    }
+  </style>
+</head>
+<body class="antialiased text-white overflow-y-scroll bg-[#050505]">
+
+  <!-- OSNOVNI TAMNI GRADIJENT -->
+  <div class="fixed inset-0 z-[0] bg-gradient-to-br from-[#08121f] via-[#050505] to-[#020202]"></div>
+  
+  <!-- AMBIJENTALNI GLOW -->
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+  <div class="bg-glow-3"></div>
+
+  <!-- GEOMETRIJA (Statični krugovi) -->
+  <div class="bg-circle-1"></div>
+  <div class="bg-circle-2"></div>
+  <div class="bg-circle-3"></div>
+  <div class="bg-circle-4"></div>
+
+  <!-- GLAVNI KONTEJNER -->
+  <div id="pool-app" data-menu={JSON.stringify(poolMenu)} class="relative z-[10] w-full min-h-screen flex flex-col items-center pb-16">
+    <div class="w-full md:max-w-2xl mx-auto px-6 flex flex-col items-center">
+      
+      <!-- Header -->
+      <header class="pt-16 pb-12 text-center w-full flex flex-col items-center">
+        <img src="/icons/Logo.svg" alt="Sky Logo" class="h-14 md:h-16 w-auto mb-3 object-contain drop-shadow-lg">
+        <p class="text-[#00A8E8] text-[10px] tracking-[0.4em] uppercase font-semibold font-sans">Pool Bar Menu</p>
+      </header>
+
+      <!-- Main Toggles -->
+      <div class="flex p-1 mb-10 w-full max-w-[280px] bg-white/5 backdrop-blur-md rounded-full border border-white/10 font-sans shadow-lg">
+        <button id="btn-food" class="flex-1 py-2 rounded-full bg-white text-black font-semibold text-sm transition-all duration-300 shadow-sm">
+          Храна
+        </button>
+        <button id="btn-drinks" class="flex-1 py-2 rounded-full text-gray-300 font-medium text-sm transition-all duration-300 hover:text-white">
+          Пијалоци
+        </button>
+      </div>
+
+      <!-- Categories Container -->
+      <div class="w-full mb-10 relative">
+        <div id="category-container" class="flex overflow-x-auto gap-6 justify-start md:justify-center pb-2 hide-scroll snap-x snap-mandatory scroll-smooth font-sans">
+          <!-- JS generiše tabove -->
+        </div>
+      </div>
+
+      <!-- Products Container -->
+      <main class="w-full flex flex-col" id="product-container">
+        <!-- JS generiše proizvode -->
+      </main>
+
+    </div>
+  </div>
+
+  <script src="../scripts/pool.ts"></script>
+</body>
+</html>

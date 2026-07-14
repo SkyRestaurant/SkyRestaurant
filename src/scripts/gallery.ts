@@ -5,27 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(lightbox);
   }
 
-  // @ts-ignore
-  const swiper = new Swiper('.gallery-swiper', {
-    loop: true,
-    slidesPerView: 'auto',
-    spaceBetween: 16,
-    centeredSlides: true,
-    grabCursor: true,
-    keyboard: {
-      enabled: true,
-    },
-    navigation: {
-      nextEl: '#slider-next',
-      prevEl: '#slider-prev',
-    },
-    breakpoints: {
-      768: {
-        spaceBetween: 32,
-      },
-    }
-  });
-
   const swiperContainer = document.querySelector('.gallery-swiper');
   const lbImg = document.getElementById('lb-img') as HTMLImageElement;
   const btnClose = document.getElementById('lb-close');
@@ -35,101 +14,162 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!lightbox || !lbImg || !swiperContainer) return;
 
   const imageUrls = JSON.parse(swiperContainer.getAttribute('data-images') || '[]');
-  let currentIndex = 0;
   
-  // Zastavica koja sprečava Ghost Click na mobilnom
-  let ignoreClose = false;
-
-  const openLightbox = (index: number) => {
-    currentIndex = index;
-    lbImg.src = imageUrls[currentIndex];
+  // @ts-ignore
+  const swiper = new Swiper('.gallery-swiper', {
+    loop: false, 
+    slidesPerView: 'auto',
+    spaceBetween: 16,
+    centeredSlides: false, 
+    slidesOffsetBefore: 16, // Mobilni default levo
+    slidesOffsetAfter: 16,  // Mobilni default desno
+    grabCursor: true,
     
-    // Blokiramo skrol (nema podskakivanja jer smo sakrili scrollbar u global.css)
-    document.body.style.overflow = 'hidden';
+    // Blokira slučajne klikove dok se skrola
+    preventClicks: true,
+    preventClicksPropagation: true,
 
-    // Aktivacija zastavice protiv duplog klika na telefonu
-    ignoreClose = true;
-    setTimeout(() => { ignoreClose = false; }, 150);
-
-    lightbox.classList.remove('hidden');
-    lightbox.classList.add('flex');
-    setTimeout(() => lightbox.classList.remove('opacity-0'), 10);
-  };
-
-  const closeLightbox = () => {
-    if (ignoreClose) return; // Ako je Ghost Click u toku, ignoriši
-
-    lightbox.classList.add('opacity-0');
-    setTimeout(() => {
-      lightbox.classList.add('hidden');
-      lightbox.classList.remove('flex');
-      lbImg.src = '';
-      document.body.style.overflow = ''; 
-    }, 300);
-  };
-
-  const showNext = (e?: Event) => {
-    if(e) e.stopPropagation();
-    currentIndex = (currentIndex + 1) % imageUrls.length;
-    lbImg.src = imageUrls[currentIndex];
-  };
-
-  const showPrev = (e?: Event) => {
-    if(e) e.stopPropagation();
-    currentIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
-    lbImg.src = imageUrls[currentIndex];
-  };
-
-  // SWIPER KLIK
-  swiper.on('click', (s: any) => {
-    if (s.clickedSlide) {
-      const realIndex = parseInt(s.clickedSlide.getAttribute('data-swiper-slide-index'), 10);
-      if (!isNaN(realIndex)) {
-        openLightbox(realIndex);
+    keyboard: {
+      enabled: true,
+    },
+    navigation: {
+      nextEl: '#slider-next',
+      prevEl: '#slider-prev',
+    },
+    
+    // NOVE DIMENZIJE ZA TABLET I DESKTOP
+    breakpoints: {
+      768: {
+        spaceBetween: 24,
+        slidesOffsetBefore: 100, // Tablet 100px
+        slidesOffsetAfter: 100,
+      },
+      1024: {
+        spaceBetween: 32,
+        slidesOffsetBefore: 200, // Desktop 200px
+        slidesOffsetAfter: 200,
       }
     }
   });
 
-  // LIGHTBOX KONTROLE
-  if (btnClose) btnClose.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
+  let currentIndex = 0;
+  let isLightboxOpen = false;
+  
+  // Zastavica koja ubija "Ghost Click" bag na mobilnim telefonima
+  let ignoreClose = false;
+
+  const updateLightboxArrows = () => {
+    if (currentIndex <= 0) {
+      btnPrev?.classList.add('opacity-0', 'pointer-events-none');
+    } else {
+      btnPrev?.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    if (currentIndex >= imageUrls.length - 1) {
+      btnNext?.classList.add('opacity-0', 'pointer-events-none');
+    } else {
+      btnNext?.classList.remove('opacity-0', 'pointer-events-none');
+    }
+  };
+
+  const openLightbox = (index: number) => {
+    if (isLightboxOpen) return;
+    isLightboxOpen = true;
+    currentIndex = index;
+    lbImg.src = imageUrls[currentIndex];
+    
+    updateLightboxArrows(); 
+    
+    // Čist overflow
+    document.body.style.overflow = 'hidden'; 
+
+    // OVO SPREČAVA DA SE SLIKA INSTANT UGAS/PODSKOČI NA MOBILNOM (400ms blokada)
+    ignoreClose = true;
+    setTimeout(() => { ignoreClose = false; }, 400);
+
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        lightbox.classList.remove('opacity-0');
+      });
+    });
+  };
+
+  const closeLightbox = () => {
+    if (ignoreClose || !isLightboxOpen) return;
+    lightbox.classList.add('opacity-0');
+    
+    setTimeout(() => {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      lbImg.src = '';
+      
+      document.body.style.overflow = '';
+      isLightboxOpen = false;
+    }, 300);
+  };
+
+  const showNext = (e?: Event) => {
+    if(e) { e.preventDefault(); e.stopPropagation(); }
+    if (currentIndex >= imageUrls.length - 1) return; 
+    currentIndex++;
+    lbImg.src = imageUrls[currentIndex];
+    updateLightboxArrows();
+  };
+
+  const showPrev = (e?: Event) => {
+    if(e) { e.preventDefault(); e.stopPropagation(); }
+    if (currentIndex <= 0) return; 
+    currentIndex--;
+    lbImg.src = imageUrls[currentIndex];
+    updateLightboxArrows();
+  };
+
+  swiper.on('click', (s: any, e: Event) => {
+    if (e) { e.preventDefault(); } // Ubija defaultno ponašanje browsera (skakanje)
+    const clickedElement = (e.target as HTMLElement).closest('.gallery-img-wrapper');
+    if (clickedElement) {
+      const exactIndex = parseInt(clickedElement.getAttribute('data-index') || '0', 10);
+      if (!isNaN(exactIndex)) {
+        openLightbox(exactIndex);
+      }
+    }
+  });
+
+  if (btnClose) btnClose.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); closeLightbox(); });
   if (btnNext) btnNext.addEventListener('click', showNext);
   if (btnPrev) btnPrev.addEventListener('click', showPrev);
 
   lightbox.addEventListener('click', (e) => {
-    // Gašenje samo ako se klikne na crnu pozadinu (a ne na strelice ili sliku)
-    if (e.target === lightbox) {
-      closeLightbox();
-    }
+    if (e.target === lightbox || e.target === lbImg.parentElement) closeLightbox();
   });
 
-  // TASTATURA (Desktop)
   document.addEventListener('keydown', (e) => {
-    if (lightbox.classList.contains('hidden')) return;
+    if (!isLightboxOpen) return;
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowRight') showNext();
     if (e.key === 'ArrowLeft') showPrev();
   });
 
-  // --- MOBILNI SWIPE GESTURES ZA LIGHTBOX ---
   let touchStartX = 0;
   let touchEndX = 0;
-  const swipeThreshold = 50; // Minimalna razdaljina za swipe
+  const swipeThreshold = 50; 
 
   lightbox.addEventListener('touchstart', (e) => {
     touchStartX = e.changedTouches[0].screenX;
   }, { passive: true });
 
   lightbox.addEventListener('touchend', (e) => {
-    if (lightbox.classList.contains('hidden')) return;
+    if (!isLightboxOpen) return;
     
     touchEndX = e.changedTouches[0].screenX;
     const swipeDistance = touchEndX - touchStartX;
 
-    // Ako je swipe levo
     if (swipeDistance < -swipeThreshold) {
       showNext();
     }
-    // Ako je swipe desno
     if (swipeDistance > swipeThreshold) {
       showPrev();
     }

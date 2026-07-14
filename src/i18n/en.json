@@ -22,8 +22,6 @@
 
   "gallery.tag": "Ambiance",
   "gallery.title": "OUR STORY",
-  "gallery.show_more": "SHOW MORE",
-  "gallery.show_less": "SHOW LESS",
 
   "about.tag": "Our Story",
   "about.title": "More than a restaurant",
@@ -41,7 +39,10 @@
   "contact.hours": "Working Hours",
   "contact.hours_val": "Monday - Sunday: 08:00 - 24:00",
   "contact.social": "Social Media",
-  "contact.map_link": "View on Google Maps",
 
-  "footer.text": "All rights reserved."
+  "footer.text": "All rights reserved.",
+
+  "error.title": "Page not found",
+  "error.desc": "It looks like you're lost. The page you are looking for does not exist, has been moved, or is temporarily unavailable.",
+  "error.btn": "Return to home"
 }
