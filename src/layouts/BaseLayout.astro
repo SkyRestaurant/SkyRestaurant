@@ -33,17 +33,34 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://skyresta
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
+
     
-    <!-- Open Graph / Facebook -->
+    <!-- 1. PROFESIONALNI FAVICON LINKOVI (Ги поврзува сите фајлови од public фолдерот) -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0a0a0a" /> <!-- Боја на пребарувачот на мобилен -->
+
+    <!-- 2. OPEN GRAPH / FACEBOOK / VIBER -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <!-- Slike restorana u public/img/ za share preview -->
-    <meta property="og:image" content={new URL('/img/sky-og-image.jpg', Astro.url)} />
+    <meta property="og:site_name" content="Sky Restaurant & Pool Bar" />
+    <meta property="og:locale" content={lang === 'mk' ? 'mk_MK' : 'en_US'} />
+    <!-- ВНИМАНИЕ ЗА СЛИКАТА (Прочитај подолу) -->
+    <meta property="og:image" content={new URL('/og-image.jpg', Astro.site || Astro.url)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
-    
-    <!-- Google Fonts dodajemo ovde ako zatreba -->
+    <!-- 3. TWITTER CARDS -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={Astro.url} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL('/og-image.jpg', Astro.site || Astro.url)} />
   </head>
 
   <!-- Globalni stil na body-ju -->
@@ -55,16 +72,29 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://skyresta
       <slot />
     </main>
 
-    <!-- Back to Top Button -->
-    <button 
-      id="back-to-top" 
-      class="fixed bottom-8 right-8 z-50 flex items-center justify-center w-12 h-12 bg-dark text-lightbrown rounded-sm opacity-0 translate-y-10 pointer-events-none transition-all duration-500 hover:bg-darkbrown hover:text-white shadow-xl focus:outline-none"
-      aria-label="Back to top"
-    >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+    <!-- Back to Top Button sa Scroll Progress-om -->
+    <div id="back-to-top-container" class="fixed bottom-8 right-8 z-50 flex items-center justify-center w-14 h-14 opacity-0 translate-y-10 pointer-events-none transition-all duration-500">
+      
+      <!-- SVG Prsten (Progress Bar) -->
+      <svg class="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 100 100">
+        <!-- Bledi prsten (Traka u pozadini) -->
+        <circle cx="50" cy="50" r="46" fill="none" class="stroke-darkbrown/10" stroke-width="5" />
+        <!-- Aktivni prsten (Puni se na osnovu skrola) -->
+        <circle id="progress-circle" cx="50" cy="50" r="46" fill="none" class="stroke-accent-gold" stroke-width="5" stroke-linecap="round" style="stroke-dasharray: 289; stroke-dashoffset: 289; transition: stroke-dashoffset 0.1s ease-out;" />
       </svg>
-    </button>
+      
+      <!-- Samo Dugme -->
+      <button 
+        id="back-to-top" 
+        class="relative flex items-center justify-center w-11 h-11 bg-dark text-lightbrown rounded-full hover:bg-darkbrown hover:text-white shadow-xl focus:outline-none transition-colors"
+        aria-label="Back to top"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"></path>
+        </svg>
+      </button>
+
+    </div>
 
   <script src="../scripts/baselayout.ts"></script>
   </body>

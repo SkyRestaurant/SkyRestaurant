@@ -29,6 +29,14 @@
     /* Automatski primenjuje Playfair na sve naslove */
     @apply font-serif text-dark;
   }
+  html, body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar, body::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .animate-fade-in-up {
@@ -63,3 +71,7 @@
 .open .hamburger-bottom {
   transform: translateY(-8px) rotate(-45deg);
 }
+
+.swiper-slide {
+    width: auto !important;
+  }
