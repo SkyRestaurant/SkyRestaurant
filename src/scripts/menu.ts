@@ -1,11 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Skrol Strelice
   const leftBtns = document.querySelectorAll<HTMLButtonElement>('.scroll-left');
   const rightBtns = document.querySelectorAll<HTMLButtonElement>('.scroll-right');
 
   leftBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Gadja slider kontejner koji je pored strelice
       const container = btn.nextElementSibling as HTMLElement;
       if (container) container.scrollBy({ left: -250, behavior: 'smooth' });
     });
@@ -18,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 2. Glavni Tabovi (Hrana / Piće)
   const mainTabs = document.querySelectorAll<HTMLButtonElement>('.main-tab');
   const mainSections = document.querySelectorAll<HTMLElement>('.main-section');
 
@@ -77,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 3. Pod-tabovi (Salati, Pice, itd. sa novim PREMIUM GRADIENT klasama)
   const subTabs = document.querySelectorAll<HTMLButtonElement>('.sub-tab');
   const productGrids = document.querySelectorAll<HTMLElement>('.product-grid');
 
@@ -89,17 +85,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const siblingTabs = document.querySelectorAll(`.sub-tab[data-parent="${parentKey}"]`);
       
-      // Resetuj inaktivno stanje (skidamo gradient i senku)
       siblingTabs.forEach(t => {
         t.classList.remove('bg-gradient-to-tr', 'from-darkbrown', 'to-accent-gold', 'text-white', 'font-medium', 'shadow-md', 'is-active');
         t.classList.add('bg-transparent', 'text-dark/70', 'hover:text-darkbrown', 'hover:bg-darkbrown/5');
       });
 
-      // Postavi premium gradient na kliknuti tab
       tab.classList.remove('bg-transparent', 'text-dark/70', 'hover:text-darkbrown', 'hover:bg-darkbrown/5');
       tab.classList.add('bg-gradient-to-tr', 'from-darkbrown', 'to-accent-gold', 'text-white', 'font-medium', 'shadow-md', 'is-active');
 
-      // Animacija strelica za feedback
       const leftBtn = tab.closest('.relative')?.querySelector('.scroll-left');
       const rightBtn = tab.closest('.relative')?.querySelector('.scroll-right');
       if(leftBtn) {
@@ -111,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(() => rightBtn.classList.remove('bg-darkbrown', 'text-white'), 200);
       }
 
-      // Prikazi grid
       productGrids.forEach(grid => {
         if (grid.id.startsWith(`grid-${parentKey}`)) {
           if (grid.id === `grid-${parentKey}-${subKey}`) {

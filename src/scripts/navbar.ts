@@ -22,7 +22,6 @@ const closeMobileMenu = () => {
 };
 
 if (mobileBtn && mobileMenu) {
-  // 1. Toggle na klik hamburgera
   mobileBtn.addEventListener('click', () => {
     isMenuOpen = !isMenuOpen;
     

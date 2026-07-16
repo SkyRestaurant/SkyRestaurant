@@ -24,14 +24,12 @@ const services = [
 
 <section id="services" class="w-full bg-lightbrown pt-12 pb-24 md:py-32 px-4 relative z-10 overflow-clip -mt-px">
   
-  <!-- Minimalistički pozadinski element (Watermark) -->
   <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-[0.03] select-none">
     <span class="font-display text-[15rem] md:text-[25rem] text-dark whitespace-nowrap">Sky Bar</span>
   </div>
 
   <div class="max-w-7xl mx-auto relative z-10">
     
-    <!-- Naslovna sekcija -->
     <div class="flex flex-col items-center text-center mb-20 animate-on-scroll opacity-0 translate-y-10 transition-all duration-[1200ms] ease-out">
       <div class="flex items-center justify-center gap-6 mb-4 w-full">
         <div class="w-16 md:w-24 h-[1px] bg-gradient-to-r from-transparent to-accent-gold"></div>
@@ -43,12 +41,11 @@ const services = [
       </h2>
     </div>
 
-    <!-- Grid sa karticama -->
-    <div class="flex flex-col m-auto md:max-w-4/5 lg:max-w-1/1 lg:grid lg:grid-cols-3 gap-16 lg:gap-12">
+    <div class="flex flex-col m-auto md:max-w-4/5 lg:max-w-1/1 lg:grid lg:grid-cols-3 gap-8 lg:gap-12">
       {services.map((service, index) => (
         <div 
           class={`group w-full aspect-[4/5] rounded-sm overflow-hidden bg-black shadow-xl shadow-dark/10 lg:relative lg:top-auto animate-on-scroll opacity-0 translate-y-12 transition-all duration-[1200ms] ${index > 0 ? 'mobile-instant' : ''}`}
-          style={`--sticky-top: calc(12vh + ${index * 20}px); z-index: ${10 + index}; transition-delay: ${index * 200}ms;`}
+          style={`transition-delay: ${index * 200}ms;`}
         >
           <Image 
             src={service.img}
@@ -56,13 +53,10 @@ const services = [
             class="absolute inset-0 w-full h-full object-cover transition-transform duration-[1500ms] group-hover:scale-110"
           />
 
-          <!-- Gradient overlay -->
           <div class="absolute inset-0 bg-gradient-to-t from-dark/95 via-dark/30 to-transparent transition-opacity duration-500"></div>
 
-          <!-- Okvir na hover -->
           <div class="absolute inset-4 border border-accent-gold/40 lg:border-accent-gold/0 lg:group-hover:border-accent-gold/40 transition-colors duration-700 z-10 pointer-events-none"></div>
 
-          <!-- Tekstualni deo kartice -->
           <div class="absolute bottom-0 left-0 w-full p-8 flex flex-col justify-end z-20 translate-y-0 lg:translate-y-4 lg:group-hover:translate-y-0 transition-transform duration-500 ease-out">
             <h3 class="font-serif text-2xl md:text-3xl text-white mb-3 tracking-wide drop-shadow-md">
               {service.title}
@@ -81,7 +75,6 @@ const services = [
   </div>
 </section>
 
-<!-- CSS za momentalno učitavanje 2. i 3. kartice na mobilnim uređajima -->
 <style>
   @media (max-width: 1024px) {
     .mobile-instant {

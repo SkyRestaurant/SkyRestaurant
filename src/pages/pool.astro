@@ -21,7 +21,6 @@ import poolMenu from '../data/pool-menu.json';
     .hide-scroll::-webkit-scrollbar { display: none; }
     .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* AMBIJENTALNO SVETLO (Smanjen intenzitet, dodato treće svetlo u dnu) */
     .bg-glow-1 {
       position: fixed; top: -15%; left: -15%; width: 60vw; height: 60vw;
       background: radial-gradient(circle, rgba(0, 168, 232, 0.05) 0%, transparent 60%);
@@ -38,7 +37,6 @@ import poolMenu from '../data/pool-menu.json';
       z-index: 0; pointer-events: none;
     }
 
-    /* STATIČNE LINIJE (Smirenije boje, taman između prvog i drugog pokušaja) */
     .bg-circle-1 {
       position: fixed; top: -15%; left: -25%; width: 75vw; height: 75vw;
       border-radius: 50%; border: 1px solid rgba(0, 168, 232, 0.12);
@@ -60,7 +58,6 @@ import poolMenu from '../data/pool-menu.json';
       pointer-events: none; z-index: 1;
     }
     
-    /* Kontrola geometrije za veće ekrane */
     @media (min-width: 768px) {
       .bg-glow-1 { width: 40vw; height: 40vw; }
       .bg-glow-2 { width: 50vw; height: 50vw; }
@@ -74,31 +71,25 @@ import poolMenu from '../data/pool-menu.json';
 </head>
 <body class="antialiased text-white overflow-y-scroll bg-[#050505]">
 
-  <!-- OSNOVNI TAMNI GRADIJENT -->
   <div class="fixed inset-0 z-[0] bg-gradient-to-br from-[#08121f] via-[#050505] to-[#020202]"></div>
   
-  <!-- AMBIJENTALNI GLOW -->
   <div class="bg-glow-1"></div>
   <div class="bg-glow-2"></div>
   <div class="bg-glow-3"></div>
 
-  <!-- GEOMETRIJA (Statični krugovi) -->
   <div class="bg-circle-1"></div>
   <div class="bg-circle-2"></div>
   <div class="bg-circle-3"></div>
   <div class="bg-circle-4"></div>
 
-  <!-- GLAVNI KONTEJNER -->
   <div id="pool-app" data-menu={JSON.stringify(poolMenu)} class="relative z-[10] w-full min-h-screen flex flex-col items-center pb-16">
     <div class="w-full md:max-w-2xl mx-auto px-6 flex flex-col items-center">
       
-      <!-- Header -->
       <header class="pt-16 pb-12 text-center w-full flex flex-col items-center">
         <img src="/icons/Logo.svg" alt="Sky Logo" class="h-14 md:h-16 w-auto mb-3 object-contain drop-shadow-lg">
         <p class="text-[#00A8E8] text-[10px] tracking-[0.4em] uppercase font-semibold font-sans">Pool Bar Menu</p>
       </header>
 
-      <!-- Main Toggles -->
       <div class="flex p-1 mb-10 w-full max-w-[280px] bg-white/5 backdrop-blur-md rounded-full border border-white/10 font-sans shadow-lg">
         <button id="btn-food" class="flex-1 py-2 rounded-full bg-white text-black font-semibold text-sm transition-all duration-300 shadow-sm">
           Храна
@@ -108,14 +99,12 @@ import poolMenu from '../data/pool-menu.json';
         </button>
       </div>
 
-      <!-- Categories Container -->
       <div class="w-full mb-10 relative">
         <div id="category-container" class="flex overflow-x-auto gap-6 justify-start md:justify-center pb-2 hide-scroll snap-x snap-mandatory scroll-smooth font-sans">
           <!-- JS generiše tabove -->
         </div>
       </div>
 
-      <!-- Products Container -->
       <main class="w-full flex flex-col" id="product-container">
         <!-- JS generiše proizvode -->
       </main>

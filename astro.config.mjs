@@ -1,4 +1,3 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
@@ -7,9 +6,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  // site: 'https://skyrestaurant.mk',
-  site: 'https://skyrestaurant.github.io',
-  // base: '/SkyRestaurant', 
+  site: 'https://skyrestaurant.mk',
   i18n: {
     defaultLocale: 'mk',
     locales: ['mk', 'en'],

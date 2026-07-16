@@ -67,10 +67,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttons = categoryContainer!.querySelectorAll('button');
     buttons.forEach(btn => {
       if (btn.textContent === currentCategory) {
-        // Veći, jasniji font za aktivnu kategoriju
         btn.className = 'whitespace-nowrap pb-2 text-base font-semibold transition-all duration-300 snap-center text-[#00A8E8] border-b-2 border-[#00A8E8]';
       } else {
-        // Veći font za neaktivne
         btn.className = 'whitespace-nowrap pb-2 text-base font-normal transition-all duration-300 snap-center text-gray-400 hover:text-white border-b-2 border-transparent';
       }
     });
@@ -86,12 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     items.forEach((item: any) => {
-      // Opis sa većim fontom i sans-serif stilom
       const descHTML = item.description 
         ? `<p class="text-sm text-gray-400 mt-1.5 font-light font-sans leading-relaxed pr-4">${item.description}</p>` 
         : '';
 
-      // Redizajnirano da savršeno prati tvoju drugu sliku (krupniji naslov i cena)
       const row = `
         <div class="py-6 border-b border-white/10 last:border-0 flex justify-between items-start gap-4">
           <div class="flex-1">

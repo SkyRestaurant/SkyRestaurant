@@ -21,11 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
     slidesPerView: 'auto',
     spaceBetween: 16,
     centeredSlides: false, 
-    slidesOffsetBefore: 16, // Mobilni default levo
-    slidesOffsetAfter: 16,  // Mobilni default desno
+    slidesOffsetBefore: 16,
+    slidesOffsetAfter: 16,
     grabCursor: true,
     
-    // Blokira slučajne klikove dok se skrola
     preventClicks: true,
     preventClicksPropagation: true,
 
@@ -37,16 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
       prevEl: '#slider-prev',
     },
     
-    // NOVE DIMENZIJE ZA TABLET I DESKTOP
     breakpoints: {
       768: {
         spaceBetween: 24,
-        slidesOffsetBefore: 100, // Tablet 100px
+        slidesOffsetBefore: 100,
         slidesOffsetAfter: 100,
       },
       1024: {
         spaceBetween: 32,
-        slidesOffsetBefore: 200, // Desktop 200px
+        slidesOffsetBefore: 200,
         slidesOffsetAfter: 200,
       }
     }
@@ -55,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentIndex = 0;
   let isLightboxOpen = false;
   
-  // Zastavica koja ubija "Ghost Click" bag na mobilnim telefonima
   let ignoreClose = false;
 
   const updateLightboxArrows = () => {
@@ -80,10 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     updateLightboxArrows(); 
     
-    // Čist overflow
     document.body.style.overflow = 'hidden'; 
 
-    // OVO SPREČAVA DA SE SLIKA INSTANT UGAS/PODSKOČI NA MOBILNOM (400ms blokada)
     ignoreClose = true;
     setTimeout(() => { ignoreClose = false; }, 400);
 

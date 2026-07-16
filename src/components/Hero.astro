@@ -13,38 +13,31 @@ const ui = lang === 'en' ? en : mk;
 ---
 <section class="relative w-full min-h-[100svh] flex items-center justify-center overflow-hidden bg-lightbrown">
   
-  <!-- Background Slika sa svetlim, toplim overlay-em -->
   <div class="absolute inset-0 z-0">
     <Image 
       src={bg1} 
       alt="Sky Restaurant & Pool Bar" 
       class="absolute inset-0 w-full h-full object-cover scale-105" 
     />
-    <!-- Ovaj gradient stvara onaj skupi, svetli "magazin" efekat -->
     <div class="absolute inset-0 bg-gradient-to-b from-lightbrown/40 via-lightbrown/70 to-lightbrown z-10 backdrop-blur-[2px]"></div>
   </div>
 
-  <!-- Hero Content -->
   <div class="relative z-20 text-center px-4 max-w-5xl flex flex-col items-center mt-16 animate-fade-in-up">
     
-    <!-- Welcome Text (Great Vibes) -->
     <p class="font-display text-4xl md:text-5xl text-dark mb-6 tracking-wider lowercase drop-shadow-sm">
       {ui["hero.welcome"]}
     </p>
     
-    <!-- Main Title (Playfair) -->
     <h1 class="font-serif text-5xl sm:text-6xl md:text-[5.5rem] font-medium tracking-tight text-dark uppercase leading-[1.1] mb-6">
       {ui["hero.title_part1"]}
       <br/>
       <span class="italic text-darkbrown">{ui["hero.title_part2"]}</span>
     </h1>
     
-    <!-- Subtitle (Montserrat/Mulish) -->
     <p class="font-sans text-xs md:text-sm text-dark/70 max-w-2xl mx-auto mb-12 tracking-[0.3em] uppercase font-semibold">
       {ui["hero.text"]}
     </p>
     
-    <!-- Premium Solid Button -->
     <a 
       href={lang === 'en' ? '/en/menu' : '/menu'} 
       class="group relative inline-flex items-center justify-center px-12 py-5 text-sm uppercase tracking-[0.2em] font-bold text-lightbrown bg-dark overflow-hidden transition-all duration-500 hover:bg-darkbrown hover:shadow-2xl"

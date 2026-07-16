@@ -1,7 +1,6 @@
 ---
-// src/layouts/BaseLayout.astro
 import Navbar from '../components/Navbar.astro';
-import '../styles/global.css'; // OVO JE POKRENULO TAILWIND!
+import '../styles/global.css';
 
 interface Props {
   title: string;
@@ -9,14 +8,12 @@ interface Props {
   lang?: 'mk' | 'en';
 }
 
-// Izvlačimo props koje prosleđujemo iz svake stranice (index.astro, menu.astro itd.)
 const { 
   title, 
   description = "Sky Restaurant & Pool Bar - Вкус, забава и летна магија.", 
   lang = "mk" 
 } = Astro.props;
 
-// Definišemo osnovni URL za Open Graph
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://skyrestaurant.mk');
 ---
 
@@ -28,43 +25,35 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://skyresta
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     
-    <!-- Primary Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-
     
-    <!-- 1. PROFESIONALNI FAVICON LINKOVI (Ги поврзува сите фајлови од public фолдерот) -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#0a0a0a" /> <!-- Боја на пребарувачот на мобилен -->
+    <meta name="theme-color" content="#0a0a0a" />
 
-    <!-- 2. OPEN GRAPH / FACEBOOK / VIBER -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="Sky Restaurant & Pool Bar" />
     <meta property="og:locale" content={lang === 'mk' ? 'mk_MK' : 'en_US'} />
-    <!-- Fiksirana putanja za sliku -->
     <meta property="og:image" content={new URL('/og-image.jpg', Astro.site || 'https://skyrestaurant.mk')} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
-    <!-- 3. TWITTER CARDS -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <!-- Fiksirana putanja za sliku -->
     <meta name="twitter:image" content={new URL('/og-image.jpg', Astro.site || 'https://skyrestaurant.mk')} />
   </head>
 
-  <!-- Globalni stil na body-ju -->
   <body class="bg-[#f8f6f0] text-[#333333] antialiased font-sans min-h-screen flex flex-col overflow-x-hidden">
     
     <Navbar lang={lang} />
@@ -73,18 +62,13 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://skyresta
       <slot />
     </main>
 
-    <!-- Back to Top Button sa Scroll Progress-om -->
     <div id="back-to-top-container" class="fixed bottom-8 right-8 z-50 flex items-center justify-center w-14 h-14 opacity-0 translate-y-10 pointer-events-none transition-all duration-500">
       
-      <!-- SVG Prsten (Progress Bar) -->
       <svg class="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 100 100">
-        <!-- Bledi prsten (Traka u pozadini) -->
         <circle cx="50" cy="50" r="46" fill="none" class="stroke-darkbrown/10" stroke-width="5" />
-        <!-- Aktivni prsten (Puni se na osnovu skrola) -->
         <circle id="progress-circle" cx="50" cy="50" r="46" fill="none" class="stroke-accent-gold" stroke-width="5" stroke-linecap="round" style="stroke-dasharray: 289; stroke-dashoffset: 289; transition: stroke-dashoffset 0.1s ease-out;" />
       </svg>
       
-      <!-- Samo Dugme -->
       <button 
         id="back-to-top" 
         class="relative flex items-center justify-center w-11 h-11 bg-dark text-lightbrown rounded-full hover:bg-darkbrown hover:text-white shadow-xl focus:outline-none transition-colors"
