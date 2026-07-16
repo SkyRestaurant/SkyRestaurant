@@ -6,7 +6,7 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()]
   },
-  site: 'https://skyrestaurant.mk',
+  site: 'https://sezontech.com',
   i18n: {
     defaultLocale: 'mk',
     locales: ['mk', 'en'],
